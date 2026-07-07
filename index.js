@@ -1,25 +1,27 @@
-const net = require("net");
+const mineflayer = require("mineflayer");
 const settings = require("./settings.json");
 
-const socket = new net.Socket();
+function createBot() {
 
-socket.setTimeout(10000);
+    const bot = mineflayer.createBot({
+        host: settings.server.host,
+        port: settings.server.port,
+        username: settings.account.username,
+        version: settings.server.version
+    });
 
-socket.on("connect", () => {
-    console.log("Minecraft port is reachable!");
-    socket.destroy();
-});
+    bot.once("spawn", () => {
+        console.log("Bot connected!");
+    });
 
-socket.on("timeout", () => {
-    console.log("Connection timed out");
-    socket.destroy();
-});
+    bot.on("end", () => {
+        console.log("Disconnected. Reconnecting...");
+        setTimeout(createBot, settings.reconnectDelay);
+    });
 
-socket.on("error", (err) => {
-    console.log("Connection error:", err.message);
-});
+    bot.on("error", err => {
+        console.log("Bot error:", err.message);
+    });
+}
 
-socket.connect(
-    settings.server.port,
-    settings.server.host
-);
+createBot();
