@@ -1,1 +1,16 @@
+{
+  "server": {
+    "host": "",
+    "port": 25565,
+    "version": false
+  },
 
+  "account": {
+    "username": "",
+    "type": "offline"
+  },
+
+  "loginCommand": "/login AFK1",
+
+  "reconnectDelay": 10000
+}
