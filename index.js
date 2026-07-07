@@ -15,20 +15,18 @@ function createBot() {
         port: settings.server.port,
         username: settings.account.username,
         version: settings.server.version
-    });
-
     bot.once("spawn", () => {
-        console.log("Bot connected!");
-    });
+    console.log("Bot connected!");
+});
 
-    bot.on("end", () => {
-        console.log("Disconnected. Reconnecting...");
-        setTimeout(createBot, settings.reconnectDelay);
-    });
+bot.on("kicked", reason => {
+    console.log("Kicked reason:", reason);
+});
 
-    bot.on("error", err => {
-        console.log("Bot error:", err.message);
-    });
-}
+bot.on("end", reason => {
+    console.log("Disconnected reason:", reason);
+    console.log("Reconnecting...");
+    setTimeout(createBot, settings.reconnectDelay);
+});
 
 createBot();
