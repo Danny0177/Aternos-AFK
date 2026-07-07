@@ -1,6 +1,6 @@
 {
   "server": {
-    "host": "leaked.aternos.me",
+    "host": "dogfish.aternos.host:48035",
     "port": 48035,
     "version": false
   },
