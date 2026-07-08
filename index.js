@@ -35,6 +35,7 @@ function createBot() {
 
     function reconnect(reason) {
         if (reconnecting) return;
+
         reconnecting = true;
 
         log(`Disconnected (${reason}). Reconnecting in ${settings.reconnectDelay / 1000}s...`);
@@ -58,6 +59,19 @@ function createBot() {
 
     bot.once("spawn", () => {
         log("Bot connected!");
+
+        // Very lightweight activity to keep connection alive
+        setInterval(() => {
+            if (bot.entity) {
+                bot.look(
+                    bot.entity.yaw + 0.2,
+                    bot.entity.pitch,
+                    true
+                );
+
+                log("Small activity tick");
+            }
+        }, 300000); // 5 minutes
     });
 
     bot.on("message", message => {
