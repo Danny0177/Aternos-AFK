@@ -34,3 +34,18 @@ function createBot() {
 }
 
 createBot();
+bot.on("connect", () => {
+    console.log("TCP connected");
+});
+
+bot.on("login", () => {
+    console.log("Login packet received");
+});
+
+bot.on("inject_allowed", () => {
+    console.log("Protocol injected");
+});
+
+bot.on("error", err => {
+    console.log("Bot error:", err);
+});
