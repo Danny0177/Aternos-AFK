@@ -8,9 +8,21 @@ http.createServer((req, res) => {
 const mineflayer = require("mineflayer");
 const settings = require("./settings.json");
 
+function log(message) {
+    console.log(`[${new Date().toLocaleTimeString()}] ${message}`);
+}
+
+process.on("uncaughtException", err => {
+    console.error(`[${new Date().toLocaleTimeString()}] Uncaught Exception:`, err);
+});
+
+process.on("unhandledRejection", err => {
+    console.error(`[${new Date().toLocaleTimeString()}] Unhandled Rejection:`, err);
+});
+
 function createBot() {
 
-    console.log("Creating bot...");
+    log("Creating bot...");
 
     const bot = mineflayer.createBot({
         host: settings.server.host,
@@ -19,34 +31,53 @@ function createBot() {
         version: settings.server.version
     });
 
+    let reconnecting = false;
+
+    function reconnect(reason) {
+        if (reconnecting) return;
+        reconnecting = true;
+
+        log(`Disconnected (${reason}). Reconnecting in ${settings.reconnectDelay / 1000}s...`);
+
+        setTimeout(() => {
+            createBot();
+        }, settings.reconnectDelay);
+    }
+
     bot.on("connect", () => {
-        console.log("TCP connected");
+        log("TCP connected");
     });
 
     bot.on("inject_allowed", () => {
-        console.log("Protocol injected");
+        log("Protocol injected");
     });
 
     bot.on("login", () => {
-        console.log("Login packet received");
+        log("Login packet received");
     });
 
     bot.once("spawn", () => {
-        console.log("Bot connected!");
+        log("Bot connected!");
+    });
+
+    bot.on("message", message => {
+        log(`Server: ${message.toString()}`);
     });
 
     bot.on("kicked", reason => {
-        console.log("Kicked reason:", reason);
+        log(`Kicked: ${JSON.stringify(reason)}`);
     });
 
     bot.on("error", err => {
-        console.log("Bot error:", err);
+        console.error(`[${new Date().toLocaleTimeString()}] Bot error:`, err);
     });
 
     bot.on("end", reason => {
-        console.log("Disconnected reason:", reason);
-        console.log("Reconnecting...");
-        setTimeout(createBot, settings.reconnectDelay);
+        reconnect(reason);
+    });
+
+    bot.on("close", () => {
+        log("TCP connection closed");
     });
 }
 
