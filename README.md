@@ -2,7 +2,7 @@
 
 A lightweight Minecraft AFK bot designed to keep an Aternos Minecraft server online using Mineflayer and Render.
 
-The goal of this project is reliability and simplicity:
+I have aimed here for reliability and simplicity:
 - No heavy anti-AFK systems
 - No movement/pathfinding
 - Automatic reconnects
@@ -12,14 +12,14 @@ The goal of this project is reliability and simplicity:
 
 ## Features
 
-✅ Works with offline-mode servers  
-✅ Supports Paper servers  
-✅ Automatic reconnect after disconnects  
-✅ Handles Aternos restarts  
-✅ Accepts required resource packs  
-✅ Lightweight keep-alive activity  
-✅ Render Web Service compatible  
-✅ Optional login command support  
+* Works with offline-mode servers  
+* Supports Paper servers  
+* Automatic reconnect after disconnects  
+* Handles Aternos restarts  
+* Accepts required resource packs  
+* Lightweight keep-alive activity  
+* Render: Web Service compatible  
+* Optional login command support  
 
 ---
 
