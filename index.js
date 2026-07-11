@@ -40,6 +40,7 @@ process.on("unhandledRejection", err => {
 
 let reconnectDelay = settings.reconnect.initialDelay;
 let bot = null;
+let spawnTimeout = null;
 
 
 // --------------------------------------------------
