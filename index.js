@@ -74,20 +74,19 @@ function createBot() {
 
 
     bot.on("login", () => {
-        log("Login packet received");
-    });
+    log("Login packet received");
+});
 
 
-    // ----------------------------------------------
-    // Resource pack
-    // ----------------------------------------------
+// ----------------------------------------------
+// Resource pack
+// ----------------------------------------------
 
-    bot.on("resourcePack", (url, hash) => {
+bot.on("resourcePack", (url, hash) => {
 
-    log("Resource pack requested");
-    log(`URL: ${url}`);
-    log(`Hash: ${hash}`);
-
+    log("RESOURCE PACK EVENT FIRED");
+    log("URL: " + url);
+    log("Hash: " + hash);
 
     if (settings.resourcePack.accept) {
 
@@ -242,13 +241,33 @@ bot.on("close", () => {
 // Reconnect system
 // --------------------------------------------------
 
-    bot.on("close", () => {
+function scheduleReconnect() {
 
-        log("Connection closed");
+    log(
+        `Reconnecting in ${reconnectDelay / 1000} seconds...`
+    );
 
-    });
+
+    setTimeout(() => {
+
+        createBot();
+
+    }, reconnectDelay);
+
+
+    reconnectDelay = Math.min(
+        reconnectDelay * 2,
+        settings.reconnect.maxDelay
+    );
 
 }
+
+
+// --------------------------------------------------
+// Start bot
+// --------------------------------------------------
+
+createBot();
 
 
 // --------------------------------------------------
