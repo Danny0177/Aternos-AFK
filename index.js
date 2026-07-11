@@ -1,16 +1,29 @@
 const http = require("http");
+const mineflayer = require("mineflayer");
+const settings = require("./settings.json");
+
+// --------------------------------------------------
+// Render Web Service keep-alive server
+// --------------------------------------------------
 
 http.createServer((req, res) => {
     res.writeHead(200);
     res.end("AFK bot is running");
 }).listen(process.env.PORT || 3000);
 
-const mineflayer = require("mineflayer");
-const settings = require("./settings.json");
+
+// --------------------------------------------------
+// Logging
+// --------------------------------------------------
 
 function log(message) {
     console.log(`[${new Date().toLocaleTimeString()}] ${message}`);
 }
+
+
+// --------------------------------------------------
+// Error protection
+// --------------------------------------------------
 
 process.on("uncaughtException", err => {
     console.error(`[${new Date().toLocaleTimeString()}] Uncaught Exception:`, err);
@@ -20,79 +33,218 @@ process.on("unhandledRejection", err => {
     console.error(`[${new Date().toLocaleTimeString()}] Unhandled Rejection:`, err);
 });
 
+
+// --------------------------------------------------
+// Bot variables
+// --------------------------------------------------
+
+let reconnectDelay = settings.reconnect.initialDelay;
+let bot = null;
+
+
+// --------------------------------------------------
+// Create bot
+// --------------------------------------------------
+
 function createBot() {
 
     log("Creating bot...");
 
-    const bot = mineflayer.createBot({
+    bot = mineflayer.createBot({
         host: settings.server.host,
         port: settings.server.port,
         username: settings.account.username,
         version: settings.server.version
     });
 
-    let reconnecting = false;
 
-    function reconnect(reason) {
-        if (reconnecting) return;
-
-        reconnecting = true;
-
-        log(`Disconnected (${reason}). Reconnecting in ${settings.reconnectDelay / 1000}s...`);
-
-        setTimeout(() => {
-            createBot();
-        }, settings.reconnectDelay);
-    }
+    // ----------------------------------------------
+    // Connection stages
+    // ----------------------------------------------
 
     bot.on("connect", () => {
         log("TCP connected");
     });
 
+
     bot.on("inject_allowed", () => {
         log("Protocol injected");
     });
+
 
     bot.on("login", () => {
         log("Login packet received");
     });
 
-    bot.once("spawn", () => {
-        log("Bot connected!");
 
-        // Very lightweight activity to keep connection alive
-        setInterval(() => {
-            if (bot.entity) {
+    // ----------------------------------------------
+    // Resource pack
+    // ----------------------------------------------
+
+    bot.on("resourcePack", () => {
+
+        if (settings.resourcePack.accept) {
+
+            log("Resource pack requested. Accepting...");
+
+            bot.acceptResourcePack();
+
+        } else {
+
+            log("Resource pack requested. Declining...");
+
+            bot.denyResourcePack();
+
+        }
+
+    });
+
+
+    // ----------------------------------------------
+    // Successful join
+    // ----------------------------------------------
+
+    bot.once("spawn", () => {
+
+        log("Bot joined successfully!");
+
+        // Reset reconnect delay after success
+        reconnectDelay = settings.reconnect.initialDelay;
+
+
+        // Optional lightweight activity
+        if (settings.activity.enabled) {
+
+            setInterval(() => {
+
+                if (!bot.entity) return;
+
+
                 bot.look(
-                    bot.entity.yaw + 0.2,
+                    bot.entity.yaw + 0.05,
                     bot.entity.pitch,
                     true
                 );
 
-                log("Small activity tick");
-            }
-        }, 300000); // 5 minutes
+
+                log("Activity tick");
+
+            }, settings.activity.interval);
+
+        }
+
+
+        // Optional login command
+        if (settings.loginCommand !== "") {
+
+            setTimeout(() => {
+
+                log("Sending login command");
+
+                bot.chat(settings.loginCommand);
+
+            }, 3000);
+
+        }
+
     });
 
-    bot.on("message", message => {
-        log(`Server: ${message.toString()}`);
-    });
+
+    // ----------------------------------------------
+    // Server events
+    // ----------------------------------------------
 
     bot.on("kicked", reason => {
-        log(`Kicked: ${JSON.stringify(reason)}`);
+
+        log(
+            "Kicked: " +
+            JSON.stringify(reason)
+        );
+
     });
+
+
+    bot.on("message", message => {
+
+        const text = message.toString();
+
+        // Only log important messages
+        if (text.length > 0) {
+            log("Server message: " + text);
+        }
+
+    });
+
+
+    // ----------------------------------------------
+    // Errors
+    // ----------------------------------------------
 
     bot.on("error", err => {
-        console.error(`[${new Date().toLocaleTimeString()}] Bot error:`, err);
+
+        log(
+            "Bot error: " +
+            err.message
+        );
+
     });
+
+
+    // ----------------------------------------------
+    // Disconnect handling
+    // ----------------------------------------------
 
     bot.on("end", reason => {
-        reconnect(reason);
+
+        log(
+            "Disconnected: " +
+            reason
+        );
+
+
+        scheduleReconnect();
+
     });
 
+
     bot.on("close", () => {
-        log("TCP connection closed");
+
+        log("Connection closed");
+
     });
+
 }
+
+
+// --------------------------------------------------
+// Reconnect system
+// --------------------------------------------------
+
+function scheduleReconnect() {
+
+    log(
+        `Reconnecting in ${reconnectDelay / 1000} seconds...`
+    );
+
+
+    setTimeout(() => {
+
+        createBot();
+
+
+    }, reconnectDelay);
+
+
+    reconnectDelay = Math.min(
+        reconnectDelay * 2,
+        settings.reconnect.maxDelay
+    );
+
+}
+
+
+// --------------------------------------------------
+// Start bot
+// --------------------------------------------------
 
 createBot();
