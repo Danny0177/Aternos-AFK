@@ -55,6 +55,7 @@ function createBot() {
 
     log(`Attempting connection to ${settings.server.host}:${settings.server.port}`);
 
+let connectionTimeout;
 bot = mineflayer.createBot({
     host: settings.server.host,
     port: settings.server.port,
