@@ -2,6 +2,8 @@ const http = require("http");
 const mineflayer = require("mineflayer");
 const settings = require("./settings.json");
 
+console.log("=== AFK BOT VERSION 2.1 ===");
+
 // --------------------------------------------------
 // Render Web Service keep-alive server
 // --------------------------------------------------
