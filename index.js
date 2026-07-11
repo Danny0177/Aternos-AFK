@@ -63,18 +63,17 @@ bot = mineflayer.createBot({
 });
 
 setTimeout(() => {
+    log("30 second connection timeout reached.");
 
-    if (!bot._client || !bot._client.socket || bot._client.socket.destroyed) {
-
-        log("Connection never established. Restarting bot...");
-
-        try {
-            bot.quit();
-        } catch {}
-
-        scheduleReconnect();
-
+    if (!bot._client || !bot._client.socket) {
+        log("No socket was created.");
+    } else {
+        log("Socket exists but connection did not complete.");
     }
+
+    try {
+        bot.quit();
+    } catch {}
 
 }, 30000);
 
