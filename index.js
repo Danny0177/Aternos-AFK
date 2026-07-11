@@ -242,25 +242,11 @@ bot.on("close", () => {
 // Reconnect system
 // --------------------------------------------------
 
-function scheduleReconnect() {
+    bot.on("close", () => {
 
-    log(
-        `Reconnecting in ${reconnectDelay / 1000} seconds...`
-    );
+        log("Connection closed");
 
-
-    setTimeout(() => {
-
-        createBot();
-
-
-    }, reconnectDelay);
-
-
-    reconnectDelay = Math.min(
-        reconnectDelay * 2,
-        settings.reconnect.maxDelay
-    );
+    });
 
 }
 
