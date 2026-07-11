@@ -112,10 +112,13 @@ function createBot() {
 
     bot.once("spawn", () => {
 
-        log("Bot joined successfully!");
+    log("Bot joined successfully!");
 
-        // Reset reconnect delay after success
-        reconnectDelay = settings.reconnect.initialDelay;
+    if (spawnTimeout) {
+        clearTimeout(spawnTimeout);
+    }
+
+    reconnectDelay = settings.reconnect.initialDelay;
 
 
         // Optional lightweight activity
