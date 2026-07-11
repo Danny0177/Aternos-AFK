@@ -83,7 +83,7 @@ setTimeout(() => {
     // Connection stages
     // ----------------------------------------------
 
-    bbot.on("connect", () => {
+    bot.on("connect", () => {
 
     log("TCP connected");
 
