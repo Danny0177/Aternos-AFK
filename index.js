@@ -186,43 +186,56 @@ function createBot() {
 
 
     // ----------------------------------------------
-    // Errors
-    // ----------------------------------------------
+// Errors
+// ----------------------------------------------
 
-    bot.on("error", err => {
+bot.on("error", err => {
 
-        log(
-            "Bot error: " +
-            err.message
-        );
+    log(
+        "Bot error: " +
+        err.message
+    );
 
-    });
-
-
-    // ----------------------------------------------
-    // Disconnect handling
-    // ----------------------------------------------
-
-    bot.on("end", reason => {
-
-        log(
-            "Disconnected: " +
-            reason
-        );
+});
 
 
-        scheduleReconnect();
+// ----------------------------------------------
+// Spawn timeout
+// ----------------------------------------------
 
-    });
+spawnTimeout = setTimeout(() => {
+
+    log("Bot failed to spawn within 60 seconds.");
+    log("Closing connection and retrying.");
+
+    try {
+        bot.quit();
+    } catch {}
+
+}, 60000);
 
 
-    bot.on("close", () => {
+// ----------------------------------------------
+// Disconnect handling
+// ----------------------------------------------
 
-        log("Connection closed");
+bot.on("end", reason => {
 
-    });
+    log(
+        "Disconnected: " +
+        reason
+    );
 
-}
+    scheduleReconnect();
+
+});
+
+
+bot.on("close", () => {
+
+    log("Connection closed");
+
+});
 
 
 // --------------------------------------------------
