@@ -1,6 +1,6 @@
 {
   "server": {
-    "host": "leaked.aternos.me",
+    "host": "YOUR_ATERNOS_ADDRESS",
     "port": 48035,
     "version": false
   },
@@ -10,5 +10,19 @@
     "type": "offline"
   },
 
-  "reconnectDelay": 10000
+  "resourcePack": {
+    "accept": true
+  },
+
+  "activity": {
+    "enabled": true,
+    "interval": 60000
+  },
+
+  "reconnect": {
+    "initialDelay": 10000,
+    "maxDelay": 60000
+  },
+
+  "loginCommand": ""
 }
