@@ -237,14 +237,14 @@ bot.on("error", err => {
 
 spawnTimeout = setTimeout(() => {
 
-    log("Bot failed to spawn within 60 seconds.");
+    log("Bot failed to spawn within 180 seconds.");
     log("Closing connection and retrying.");
 
     try {
         bot.quit();
     } catch {}
 
-}, 60000);
+}, 180000);
 
 
     // ----------------------------------------------
