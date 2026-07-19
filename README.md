@@ -22,7 +22,10 @@ Railway/Render account (for hosting) Setup:
 
 # Setup
 
-## 1. Install dependencies
+## 1. Server dependencies:
+ViaVersion, ViaBackward, and ViaRewind plugins installed on Paper Software. Your server Version might not be supported by mineflayer. These plugins allow the bot to communicate and join anyway.
+
+## 2. Install dependencies
 
 Run:
 
