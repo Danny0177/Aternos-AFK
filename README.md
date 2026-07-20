@@ -2,16 +2,14 @@
 
 - A lightweight Minecraft AFK bot designed to keep an Aternos Minecraft server online using Mineflayer and Railway, Including comprehensive debug abilities to improve upon the base bot out of the box.
 
-I have aimed here for reliability and simplicity:
-No heavy anti-AFK systems
-No movement/pathfinding
-Automatic reconnects
+**##I have aimed here for reliability and simplicity:**
+Lightweight anti-AFK systems
+No pathfinding
+Automatic respawns
 Low CPU and RAM usage Features:
-Works with offline-mode servers
-Supports Paper servers
 Automatic reconnect after disconnects
 Handles Aternos restarts
-Accepts required resource packs
+Handles resource packs
 Lightweight keep-alive activity
 Render & Railway: Web Service compatible
 Optional login command support Requirements:
@@ -21,13 +19,19 @@ Mineflayer-compatible version
 Railway/Render account (for hosting) Setup:
 
 # Setup
+**##1. Requirements:**
+- A Minecraft server
+- A Railway/Render account (for hosting)
+## 2. Server dependencies:
+Offline Mode Enabled
+- The bot does not use a premium account to join, these accounts require Online Mode = False
+ViaVersion, ViaBackward, and ViaRewind plugins installed on Paper Software. 
+- Your server Version might not be supported by mineflayer. These plugins allow the bot to communicate and join anyway.
 
-## 1. Server dependencies:
-ViaVersion, ViaBackward, and ViaRewind plugins installed on Paper Software. Your server Version might not be supported by mineflayer. These plugins allow the bot to communicate and join anyway.
-
-## 2. Install dependencies
+## 3. Install dependencies (on the Web hosing platform)
 
 Run:
 
 ```bash
 npm install
+npm start
