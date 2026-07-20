@@ -21,9 +21,9 @@
 - A Minecraft server
 - A Railway/Render account (for hosting)
 ## 2. Server dependencies:
-Offline Mode Enabled
+- Offline Mode Enabled
 - The bot does not use a premium account to join, these accounts require Online Mode = False
-ViaVersion, ViaBackward, and ViaRewind plugins installed on the software "Paper". 
+- ViaVersion, ViaBackward, and ViaRewind plugins installed on the software "Paper". 
 - Your server Version might not be supported by mineflayer. These plugins allow the bot to communicate and join anyway.
 
 ## 3. Install dependencies (on the Web hosing platform)
