@@ -2,11 +2,12 @@
 
 - A lightweight Minecraft AFK bot designed to keep an Aternos Minecraft server online using Mineflayer and Railway, Including comprehensive debug abilities to improve upon the base bot out of the box.
 
-##**I have aimed here for reliability and simplicity:**
+##**I have aimed here for reliability and simplicity:**##
 - Lightweight anti-AFK system
 - No pathfinding
 - Low CPU and RAM usage
-##**Features:**
+  
+##**Features:**##
 - Automatic reconnect after disconnects
 - Automatic Respawns
 - Handles Aternos restarts
