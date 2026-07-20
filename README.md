@@ -6,7 +6,7 @@
 - Lightweight anti-AFK system
 - No pathfinding
 - Low CPU and RAM usage
-  ##**Features:**
+##**Features:**
 - Automatic reconnect after disconnects
 - Automatic Respawns
 - Handles Aternos restarts
@@ -16,7 +16,7 @@
 - Optional login command support (For plugins like AuthMe)
 
 # Setup
-**##1. Requirements:**
+##**1. Requirements:**
 - A Minecraft server
 - A Railway/Render account (for hosting)
 ## 2. Server dependencies:
